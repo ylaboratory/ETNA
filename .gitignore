@@ -1,0 +1,36 @@
+###### Python
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter notebooks
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# IPython
+profile_default/
+ipython_config.py
+
+###### R
+# History files
+.Rhistory
+.Rapp.history
+
+# Session Data files
+.RData
+
+# RStudio files
+.Rproj.user/
+
+# R Environment Variables
+.Renviron
+
+###### MacOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+###### Windows
+Thumbs.db
+Thumbs.db:encryptable
