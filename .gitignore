@@ -34,3 +34,6 @@ ipython_config.py
 ###### Windows
 Thumbs.db
 Thumbs.db:encryptable
+
+# ignore data files
+/data
