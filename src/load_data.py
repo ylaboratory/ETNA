@@ -22,8 +22,10 @@ def load_ppi(species, k_core=None, verbose=True, lcc=True):
         # add edge weights (needed in node2vec)
         nx_g[edge[0]][edge[1]]['weight'] = 1
     if verbose:
-        print('read as directed: {} nodes, {} edges'.format(len(nx_g), nx_g.size()))
+        print('read as directed: {} nodes, \
+         {} edges'.format(len(nx_g), nx_g.size()))
     nx_g.remove_edges_from(nx.selfloop_edges(nx_g))  # remove self-loops
+    nx_g.remove_nodes_from(list(nx.isolates(nx_g)))  # remove isolated nodes
     if verbose:
         print('remove selfloop edges: {} nodes, {} edges'.format(
             len(nx_g), nx_g.size()))
@@ -39,14 +41,13 @@ def load_ppi(species, k_core=None, verbose=True, lcc=True):
     if verbose:
         print('keep the largest cc: {} nodes, {} edges'.format(
             len(nx_lcc), nx_lcc.size()))
-    if k_core == None:
+    if k_core is None:
         return nx_lcc
     else:
         nx_kcore = nx.k_core(nx_lcc, k_core)  # return the k-core
         if verbose:
-            print('return the {}-core: {} nodes, {} edges'.format(k_core,
-                                                                  len(nx_kcore),
-                                                                  nx_kcore.size()))
+            print('return the {}-core: {} nodes,\
+                {} edges'.format(k_core, len(nx_kcore), nx_kcore.size()))
         return nx_kcore
 
 
@@ -61,8 +62,8 @@ def load_functional_network(species, k_core=None, verbose=True, weighted=False, 
 
     f = str(parent_dir) + '/data/functional_network/' + \
         species + '_functional.txt'
-    edges = pd.read_csv(f, sep='\t', header=None, dtype={
-                        0: str, 1: str, 2: float})
+    edges = pd.read_csv(f, sep='\t', header=None,
+                        dtype={0: str, 1: str, 2: float})
     edges = edges.rename(columns={2: "weight"})
     if weighted:
         nx_g = nx.from_pandas_edgelist(edges, 0, 1, ['weight'])
@@ -79,20 +80,21 @@ def load_functional_network(species, k_core=None, verbose=True, weighted=False, 
     if verbose:
         print('keep the largest cc: {} nodes, {} edges'.format(
             len(nx_g), nx_g.size()))
-    if k_core == None:
+    if k_core is None:
         return nx_g
     else:
         nx_kcore = nx.k_core(nx_g, k_core)  # return the k-core
         if verbose:
-            print('return the {}-core: {} nodes, {} edges'.format(k_core,
-                                                                  len(nx_kcore), nx_kcore.size()))
+            print('return the {}-core: {} nodes,\
+                {} edges'.format(k_core, len(nx_kcore), nx_kcore.size()))
         return nx_kcore
 
 
 def load_anchor(s1, s2):
     '''
      Read in the anchor links between species s1 and species s2.
-     Choices of s1 and s2: (cel,hsa) (cel,mmu) (cel,sce) (hsa,mmu) (hsa,sce) (mmu,sce)
+     Choices of s1 and s2: (cel,hsa) (cel,mmu) (cel,sce) (hsa,mmu) 
+     (hsa,sce) (mmu,sce)
     '''
     parent_dir = Path(__file__).resolve().parent.parent
     f_anchor = str(parent_dir) + '/data/ortholog/' + \
@@ -117,7 +119,7 @@ def filter_anchor(anchor, g1_node2index, g2_node2index, top_k=None):
     for row in anchor:
         if g1_node2index[row[0]] != -1 and g2_node2index[row[1]] != -1:
             filtered.append(row)
-    if top_k == None:
+    if top_k is None:
         return filtered
     return filtered[:top_k]
 
@@ -132,17 +134,23 @@ def load_go_anchor(org1, org2, file_name):
 
 
 def load_gmt(org):
-    ret = defaultdict(set)
+    '''
+    Read in go term and return two dictionary: gene2term and term2gene
+    '''
     parent_dir = Path(__file__).resolve().parent.parent
 
     f_go = str(parent_dir) + '/data/gene_ontology/' + \
         org + '_low_BP_propagated.gmt'
+    gene2terms = defaultdict(set)
+    term2genes = defaultdict(set)
     with open(f_go, 'r') as f:
         for line in f:
-            tokens = line.strip().split('\t')
-            for i in tokens[2:]:
-                ret[i].add(tokens[0])
-    return ret
+            tokens = line.split('\t')
+            tokens = [x.strip() for x in tokens]
+            for gene in tokens[2:]:
+                gene2terms[gene].add(tokens[0])
+                term2genes[tokens[0]].add(gene)
+    return gene2terms, term2genes
 
 
 def load_go_pairs(org1, org2, file_name):
@@ -155,9 +163,3 @@ def load_go_pairs(org1, org2, file_name):
     data = data[:, [0, 1]]
     print(data.shape)
     return data
-
-
-def load_sequence_similarity(org1, org2):
-    parent_dir = Path(__file__).resolve().parent.parent
-    return np.loadtxt(str(parent_dir) + '/data/sequence_similarity/' + org1 +
-                      '_' + org2 + '_sequence_similarity_updated.txt')

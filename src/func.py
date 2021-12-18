@@ -17,6 +17,10 @@ def anchor_idx(anchor, g1, g2):
 
 
 def sparse_anchor(anchor, g1, g2):
+    '''
+    generate sparse anchors that nodes appear in anchors 
+    are not connected
+    '''
     org1_anchor_dict = set()
     org2_anchor_dict = set()
     sparse_anchor = []
