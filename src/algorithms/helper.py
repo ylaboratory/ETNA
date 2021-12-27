@@ -1,3 +1,5 @@
+# helper functions for ETNA algorithm
+
 import theano
 import torch
 import numpy as np
@@ -7,8 +9,26 @@ from theano import tensor as T
 
 
 def pairwise_cosimilarity(a, b, eps=1e-8):
-    '''
-    calculate pairwise cosine similiarty between two matrices
+    '''Calculate pairwise cosine similiarty between two matrices
+
+    Parameters
+    ----------
+    a : torch.Tensor
+        input matrix 1
+        Shape `(input_a_size, embed_dim)`
+
+    b : torch.Tensor
+        input matrix 2
+        Shape `(input_b_size, embed_dim)`
+
+    eps : float
+        small value to avoid division by zero.
+
+    Returns
+    -------
+    sim_mt : torch.Tensor
+        pairwise cosimilarity matrix
+        Shape `(input_a_size, input_b_size)`
     '''
     a_n, b_n = a.norm(dim=1)[:, None], b.norm(dim=1)[:, None]
     a_norm = a / torch.clamp(a_n, min=eps)
@@ -18,8 +38,19 @@ def pairwise_cosimilarity(a, b, eps=1e-8):
 
 
 def direct_compute_deepwalk_matrix(A, window, b=1):
-    '''
-    calculate deepwalk matrix for give adjacency matrix
+    '''Calculate deepwalk matrix for give adjacency matrix
+    https://github.com/xptree/NetMF/blob/master/netmf.py
+
+    Parameters
+    ----------
+    A : scipy.sparse.csr.csr_matrix
+        adjacency matrix
+
+    window : int
+        window size
+
+    b : int
+        the number of negative samplin
     '''
     n = A.shape[0]
     vol = float(A.sum())

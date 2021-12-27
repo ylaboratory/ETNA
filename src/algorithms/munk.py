@@ -1,5 +1,6 @@
 # Paper: Functional protein representations from biological networks enable diverse cross-species inference
 # The original code can be found in: https://github.com/lrgr/munk
+# This file is a copy of the MUNK algorithm for method comparison
 
 import numpy as np
 import networkx as nx

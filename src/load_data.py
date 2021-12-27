@@ -7,6 +7,23 @@ from collections import defaultdict
 from pathlib import Path
 
 
+def keep_distinct_node(g):
+    '''
+    Keep nodes with distinct neighborhood in the graph
+    '''
+    A = nx.adjacency_matrix(g).toarray()
+    a_dict = defaultdict(set)
+    node_list = list(g.nodes())
+    for i in range(A.shape[0]):
+        a_dict[tuple(A[i])].add(node_list[i])
+    distinct_nodes = set()
+    for s in a_dict.values():
+        if len(s)<2:
+            distinct_nodes.add(list(s)[0])
+    removed_nodes = set(g.nodes()).difference(distinct_nodes)
+    g.remove_nodes_from(removed_nodes)
+
+
 def load_ppi(species, k_core=None, verbose=True, lcc=True):
     '''
      Read in the ppi network of the input species.
@@ -36,19 +53,30 @@ def load_ppi(species, k_core=None, verbose=True, lcc=True):
     if lcc:
         nx_lcc = nx_g.subgraph(
             max(nx.connected_components(nx_g), key=len))  # keep the lcc
+        if verbose:
+            print('keep the largest cc: {} nodes, {} edges'.format(
+                len(nx_lcc), nx_lcc.size()))
     else:
         nx_lcc = nx_g
-    if verbose:
-        print('keep the largest cc: {} nodes, {} edges'.format(
-            len(nx_lcc), nx_lcc.size()))
+    
     if k_core is None:
-        return nx_lcc
+        nx_kcore = nx_lcc
     else:
         nx_kcore = nx.k_core(nx_lcc, k_core)  # return the k-core
         if verbose:
-            print('return the {}-core: {} nodes,\
+            print('keep the {}-core: {} nodes,\
                 {} edges'.format(k_core, len(nx_kcore), nx_kcore.size()))
-        return nx_kcore
+            
+    node_len = 0
+    while node_len != len(nx_kcore.nodes()):
+        node_len = len(nx_kcore.nodes())
+        keep_distinct_node(nx_kcore) 
+        nx_kcore.remove_nodes_from(list(nx.isolates(nx_kcore)))
+    if verbose:
+        print('return the distinct nodes: {} nodes,\
+                {} edges'.format(len(nx_kcore), nx_kcore.size()))
+            
+    return nx_kcore
 
 
 def load_functional_network(species, k_core=None, verbose=True, weighted=False, lcc=False):
@@ -123,14 +151,6 @@ def filter_anchor(anchor, g1_node2index, g2_node2index, top_k=None):
         return filtered
     return filtered[:top_k]
 
-
-def load_go_anchor(org1, org2, file_name):
-    parent_dir = Path(__file__).resolve().parent.parent
-    f = str(parent_dir) + '/data/' + org1 + '_' + org2 + '/' + file_name
-    data = np.loadtxt(f, dtype=str, delimiter='\t')
-    data = data[data[:, 3] == 'True']
-    data = data[:, [0, 1]]
-    return data
 
 
 def load_gmt(org):

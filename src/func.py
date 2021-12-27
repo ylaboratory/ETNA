@@ -1,14 +1,23 @@
-# This file includes auxiliary functions.
+# This file includes auxiliary functions for loading data and evaluation.
 
 import numpy as np
 
 def node2index(nx_g):
+    '''
+    map from node name to node index
+    '''
     return {j:i for i,j in enumerate(nx_g.nodes())}
 
 def index2node(nx_g):
+    '''
+    map from node index to node name
+    '''
     return {i:j for i,j in enumerate(nx_g.nodes())}
 
 def anchor_idx(anchor, g1, g2):
+    '''
+    map node pairs from node name to node index
+    '''
     idx1 = node2index(g1)
     idx2 = node2index(g2)
     anchor1 = [idx1[item[0]] for item in anchor]
@@ -18,8 +27,8 @@ def anchor_idx(anchor, g1, g2):
 
 def sparse_anchor(anchor, g1, g2):
     '''
-    generate sparse anchors that nodes appear in anchors 
-    are not connected
+    generate sparse anchors that nodes in graphs only appear in
+    at most one anchor
     '''
     org1_anchor_dict = set()
     org2_anchor_dict = set()
@@ -34,6 +43,9 @@ def sparse_anchor(anchor, g1, g2):
     return sparse_anchor
 
 def normalize(matrix, actions):
+    '''
+    normalize matrix
+    '''
     for action in actions:
         if action == 'unit':
             norms = np.linalg.norm(matrix, axis=1)
