@@ -1,5 +1,12 @@
-# proj-template
-simple template for ylab projects
+# ETNA: Embedding to Network Alignment
+
+This repo contains the scripts to run the ETNA method and corresponding analysis described in the Li et al. paper, _Joint embedding of biological networks for cross-species functional alignment_
+
+
+## Citation
+> Discriminatory power of combinatorial antigen recognition in cancer T cell therapies.
+Dannenfelser R, Allen G, VanderSluis B, Koegel AK, Levinson S, Stark SR, Yao V, Tadych A, Troyanskaya OG, Lim WA. Cell Systems. 2020. [https://doi.org/10.1016/j.cels.2020.08.002](https://doi.org/10.1016/j.cels.2020.08.002)
+<!-- (DOI badge for later?[![DOI](https://zenodo.org/badge/126377943.svg)](https://zenodo.org/badge/latestdoi/126377943)) -->
 
 This repo includes a basic `.gitignore` with common files to exclude, but this should obviously be pared down / additional files should be added as necessary.
 
