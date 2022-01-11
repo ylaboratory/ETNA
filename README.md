@@ -1,33 +1,57 @@
 # ETNA: Embedding to Network Alignment
 
-This repo contains the scripts to run the ETNA method and corresponding analysis described in the Li et al. paper, _Joint embedding of biological networks for cross-species functional alignment_
-
+This repo contains the scripts to run the ETNA method and corresponding analysis
+described in the Li et al. paper,
+_Joint embedding of biological networks for cross-species functional alignment_.
 
 ## Citation
-> Discriminatory power of combinatorial antigen recognition in cancer T cell therapies.
-Dannenfelser R, Allen G, VanderSluis B, Koegel AK, Levinson S, Stark SR, Yao V, Tadych A, Troyanskaya OG, Lim WA. Cell Systems. 2020. [https://doi.org/10.1016/j.cels.2020.08.002](https://doi.org/10.1016/j.cels.2020.08.002)
-<!-- (DOI badge for later?[![DOI](https://zenodo.org/badge/126377943.svg)](https://zenodo.org/badge/latestdoi/126377943)) -->
 
-This repo includes a basic `.gitignore` with common files to exclude, but this should obviously be pared down / additional files should be added as necessary.
+> Joint embedding of biological networks for cross-species functional alignment
+Li L, Dannenfelser R, Zhu Y, Hejduk N, Segarra S, Yao V. BioRxiv. 2022.
+[add the doi](https://doi.org/10.1016/j.cels.2020.08.002)
+<!-- (DOI badge for later?
+	[![DOI](https://zenodo.org/badge/126377943.svg)]
+	(https://zenodo.org/badge/latestdoi/126377943)) -->
 
-There is also support for [super-linter](https://github.com/github/super-linter) as a [GitHub action](https://docs.github.com/en/free-pro-team@latest/actions), which essentially just means that all code will be automatically linted on push / when PRs are opened. Make sure all checks pass!
+## About
 
-The directory structure is inspired by [this article](https://medium.com/outlier-bio-blog/a-quick-guide-to-organizing-data-science-projects-updated-for-2016-4cbb1e6dac71), which is based off of this [classic article](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424) on organizing projects, and makes a good starting point for projects.
+Model organisms are widely used to further the understanding of human molecular
+mechanisms and the dysregulations that result in disease. While sequence
+similarity greatly aids this transfer, sequence similarity does not imply
+functional similarity, and thus, several current approaches incorporate
+protein-protein interactions to help map findings between species. Existing
+transfer methods either formulate the alignment problem as a matching problem
+which pits network features against known orthology, or more recently, as a
+joint embedding problem. Here, we propose a novel state-of-the-art joint embedding
+solution: Embeddings to Network Alignment (ETNA). More specifically,
+ETNA generates individual network embeddings based on network topological
+structures and then uses a Natural Language Processing-inspired cross-training
+approach to align the two embeddings using sequence orthologs. The final
+embedding preserves both within and between species gene functional
+relationships, and we demonstrate that it captures both pairwise and group
+functional relevance. In addition, ETNA’s embeddings can be used to transfer genetic
+interactions across species and identify phenotypic alignments, laying
+the groundwork for potential opportunities for drug repurposing
+and translational studies.
 
-## conda environment
-The `env.yml` file should be updated accordingly for projects that use python, so that a new conda environment can be easily installed using the following command:
+ETNA's code is roughly divided into 3 main parts:
+
+  1. training an autoencoder to embed PPI networks
+  2. aligning the embeddings between species via ortholog anchors
+  3. scoring gene pairs across organisms with cosine similarity in the embedding
+
+Additionally, there is code to compare and evaluate ETNA's pairings with MUNK.
+NEED TO EXPAND THIS PART
+
+## Usage
+
+This project uses conda to manage the required packages and setup a
+virtual environment. Once conda is installed on your machine get started
+by setting up the virtual environment
+
 ```sh
 conda env create -f env.yml
+conda activate etna
 ```
 
-Per usual, to activate the environment:
-```sh
-conda activate new_env_name
-```
-
-If the environment is already set up, to update it for new dependencies / resources:
-```sh
-conda env update -n new_env_name -f env.yml --prune
-```
-
-Note that the `--prune` flag will tell conda to remove any dependencies that may no longer be required in the environment.
+more usage instructions to come
