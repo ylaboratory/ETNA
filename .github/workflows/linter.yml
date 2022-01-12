@@ -13,10 +13,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      name: Checkout code
+    - name: Checkout code
       uses: actions/checkout@v2
 
-      name: Lint code
+    - name: Lint code
       uses: docker://github/super-linter:latest
       env:
         VALIDATE_PYTHON_BLACK: false
