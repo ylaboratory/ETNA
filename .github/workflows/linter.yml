@@ -20,5 +20,6 @@ jobs:
       uses: docker://github/super-linter:latest
       env:
         VALIDATE_PYTHON_BLACK: false
+        FILTER_REGEX_EXCLUDE: .*\.github/.*
         MULTI_STATUS: true
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
