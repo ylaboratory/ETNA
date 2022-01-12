@@ -1,5 +1,6 @@
 # Embedding to Network Alignment (ETNA) algorithm
 # With this class you can specify your own ETNA model and train it.
+#
 # ETNA builds off of SDNE (https://github.com/CyrilZhao-sudo/SDNE)
 # using different proximity functions to calculate embedding.
 # ETNA uses the deep walk approximation from
@@ -7,16 +8,14 @@
 # the global structure of the graph and use cross training function
 # to align two embeddings
 
+from collections import defaultdict
+import algorithms.helper as helper
+import networkx as nx
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import networkx as nx
-import numpy as np
-import random
-from collections import defaultdict
 from sklearn import metrics
-
-import algorithms.helper as helper
 
 
 class Trainer(nn.Module):
@@ -341,7 +340,7 @@ class EmbeddingTrainer(Trainer):
                                                     * batch_size, self.node_size))
                 idx = indexes[idx]
                 X_train = self.normalized_matrix[idx, :].to(self.device)
-                X_label = self.adjacency_matrix[idx, :].to(self.device)
+                self.adjacency_matrix[idx, :].to(self.device)
                 A_train = self.adjacency_matrix[idx, :][:, idx].to(self.device)
                 self.optimizer.zero_grad()
                 loss_2nd, loss_1st, loss_norm = \
@@ -355,8 +354,8 @@ class EmbeddingTrainer(Trainer):
 
             self.scheduler.step()
             if verbose > 0:
-                print('Epoch {0}, loss {1} . >>> Epoch {2}/{3}'.format(epoch + 1, round(loss_epoch / num_samples, 4),
-                                                                       epoch + 1, epochs))
+                print('Epoch {0}, loss {1} . >>> Epoch {2}/{3}'.format(
+                    epoch + 1, round(loss_epoch / num_samples, 4), epoch + 1, epochs))
 
     def get_embeddings(self):
         '''return the embedding

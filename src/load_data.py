@@ -1,10 +1,9 @@
 # This file contains functions that load the datasets.
-
-import networkx as nx
-import pandas as pd
-import numpy as np
 from collections import defaultdict
 from pathlib import Path
+import networkx as nx
+import numpy as np
+import pandas as pd
 
 
 def keep_distinct_node(g):
@@ -18,7 +17,7 @@ def keep_distinct_node(g):
         a_dict[tuple(A[i])].add(node_list[i])
     distinct_nodes = set()
     for s in a_dict.values():
-        if len(s)<2:
+        if len(s) < 2:
             distinct_nodes.add(list(s)[0])
     removed_nodes = set(g.nodes()).difference(distinct_nodes)
     g.remove_nodes_from(removed_nodes)
@@ -150,7 +149,6 @@ def filter_anchor(anchor, g1_node2index, g2_node2index, top_k=None):
     if top_k is None:
         return filtered
     return filtered[:top_k]
-
 
 
 def load_gmt(org):

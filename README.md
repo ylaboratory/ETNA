@@ -1,6 +1,6 @@
 # ETNA: Embedding to Network Alignment
 
-This repo contains the scripts to run the ETNA method and corresponding analysis
+This repository contains the scripts to run the ETNA method and corresponding analysis
 described in the Li et al. paper,
 _Joint embedding of biological networks for cross-species functional alignment_.
 

@@ -1,11 +1,10 @@
 # this file includes functions to evaluate network alignment result
-
-import numpy as np
-from collections import defaultdict
-from sklearn import metrics
 import heapq
-from scipy import stats
 import random
+from collections import defaultdict
+import numpy as np
+from scipy import stats
+from sklearn import metrics
 
 
 def evaluate_all(result_matrix, ontology_matrix, weight_matrix):

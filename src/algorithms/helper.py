@@ -1,9 +1,9 @@
 # helper functions for ETNA algorithm
 
-import theano
-import torch
 import numpy as np
 import scipy.sparse as sparse
+import theano
+import torch
 from scipy.sparse import csgraph
 from theano import tensor as T
 
