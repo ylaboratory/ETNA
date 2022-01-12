@@ -1,6 +1,7 @@
 # This file contains functions that load the datasets.
 from collections import defaultdict
 from pathlib import Path
+
 import networkx as nx
 import numpy as np
 import pandas as pd
@@ -57,7 +58,7 @@ def load_ppi(species, k_core=None, verbose=True, lcc=True):
                 len(nx_lcc), nx_lcc.size()))
     else:
         nx_lcc = nx_g
-    
+
     if k_core is None:
         nx_kcore = nx_lcc
     else:
@@ -65,16 +66,16 @@ def load_ppi(species, k_core=None, verbose=True, lcc=True):
         if verbose:
             print('keep the {}-core: {} nodes,\
                 {} edges'.format(k_core, len(nx_kcore), nx_kcore.size()))
-            
+
     node_len = 0
     while node_len != len(nx_kcore.nodes()):
         node_len = len(nx_kcore.nodes())
-        keep_distinct_node(nx_kcore) 
+        keep_distinct_node(nx_kcore)
         nx_kcore.remove_nodes_from(list(nx.isolates(nx_kcore)))
     if verbose:
         print('return the distinct nodes: {} nodes,\
                 {} edges'.format(len(nx_kcore), nx_kcore.size()))
-            
+
     return nx_kcore
 
 
@@ -120,7 +121,7 @@ def load_functional_network(species, k_core=None, verbose=True, weighted=False, 
 def load_anchor(s1, s2):
     '''
      Read in the anchor links between species s1 and species s2.
-     Choices of s1 and s2: (cel,hsa) (cel,mmu) (cel,sce) (hsa,mmu) 
+     Choices of s1 and s2: (cel,hsa) (cel,mmu) (cel,sce) (hsa,mmu)
      (hsa,sce) (mmu,sce)
     '''
     parent_dir = Path(__file__).resolve().parent.parent

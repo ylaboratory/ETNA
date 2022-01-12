@@ -9,6 +9,7 @@
 # to align two embeddings
 
 from collections import defaultdict
+
 import algorithms.helper as helper
 import networkx as nx
 import numpy as np
@@ -107,7 +108,7 @@ class EmbeddingModel(torch.nn.Module):
         Parameters
         ----------
         X : torch.Tensor
-            Input matrix 
+            Input matrix
             Shape `(batch_size, input_dim)`
 
         A : torch.Tensor
