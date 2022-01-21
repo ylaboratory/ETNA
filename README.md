@@ -7,11 +7,8 @@ _Joint embedding of biological networks for cross-species functional alignment_.
 ## Citation
 
 > Joint embedding of biological networks for cross-species functional alignment.
-> Li L, Dannenfelser R, Zhu Y, Hejduk N, Segarra S, Yao V. BioRxiv. 2022.
-> [add the doi](https://doi.org/10.1016/j.cels.2020.08.002)
-<!-- (DOI badge for later?
-	[![DOI](https://zenodo.org/badge/126377943.svg)]
-	(https://zenodo.org/badge/latestdoi/126377943)) -->
+> Li L, Dannenfelser R, Zhu Y, Hejduk N, Segarra S, Yao V. BioRxiv. Jan 2022.
+> [https://doi.org/10.1101/2022.01.17.476697](https://doi.org/10.1101/2022.01.17.476697)
 
 ## About
 
