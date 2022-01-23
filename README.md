@@ -1,4 +1,4 @@
-# ETNA: Embedding to Network Alignment
+# ETNA: Embeddings to Network Alignment
 
 This repository contains the scripts to run the ETNA method and corresponding analysis
 described in the Li et al. paper,
