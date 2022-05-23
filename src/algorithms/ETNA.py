@@ -570,11 +570,6 @@ class ETNA(Trainer):
         self.emb_trainer2.emb_model.train()
         orthologs = list(self.orthologs)
 
-        org1_ortholog_dict = defaultdict(int)
-        org2_ortholog_dict = defaultdict(int)
-        for i, j in orthologs:
-            org1_ortholog_dict[i] += 1
-            org2_ortholog_dict[j] += 1
 
         if seed:
             np.random.seed(seed)
@@ -589,10 +584,6 @@ class ETNA(Trainer):
             epoch_x = anchor_x[idx]
             epoch_y = anchor_y[idx]
 
-            org1_weight = torch.from_numpy(
-                np.array([1 / org1_ortholog_dict[x] for x in epoch_x])).to(self.device)
-            org2_weight = torch.from_numpy(
-                np.array([1 / org2_ortholog_dict[x] for x in epoch_y])).to(self.device)
 
             self.optimizer_align.zero_grad()
             X1 = self.emb_trainer1.normalized_matrix[epoch_x].to(self.device)
@@ -603,14 +594,14 @@ class ETNA(Trainer):
 
             loss1 = F.binary_cross_entropy_with_logits(
                 recon1, X2, reduction='none')
-            loss1 = torch.mean(torch.sum(loss1, dim=1) * org1_weight)
+            loss1 = torch.mean(torch.sum(loss1, dim=1) )
 
             emb2 = self.emb_trainer2.emb_model.encoder(X2)
             recon2 = self.emb_trainer1.emb_model.decoder(emb2)
 
             loss2 = F.binary_cross_entropy_with_logits(
                 recon2, X1, reduction='none')
-            loss2 = torch.mean(torch.sum(loss2, dim=1) * org2_weight)
+            loss2 = torch.mean(torch.sum(loss2, dim=1) )
 
             loss = self.psi * (loss1 + loss2)
 
