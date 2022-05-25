@@ -568,7 +568,6 @@ class ETNA(Trainer):
         self.emb_trainer2.emb_model.train()
         orthologs = list(self.orthologs)
 
-
         if seed:
             np.random.seed(seed)
         np.random.shuffle(orthologs)
@@ -581,7 +580,6 @@ class ETNA(Trainer):
             idx = np.arange(i * 128, min((i + 1) * 128, len(orthologs)))
             epoch_x = anchor_x[idx]
             epoch_y = anchor_y[idx]
-
 
             self.optimizer_align.zero_grad()
             X1 = self.emb_trainer1.normalized_matrix[epoch_x].to(self.device)
