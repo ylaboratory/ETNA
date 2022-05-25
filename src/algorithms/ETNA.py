@@ -8,8 +8,6 @@
 # the global structure of the graph and use cross training function
 # to align two embeddings
 
-from collections import defaultdict
-
 import algorithms.helper as helper
 import networkx as nx
 import numpy as np
@@ -594,14 +592,14 @@ class ETNA(Trainer):
 
             loss1 = F.binary_cross_entropy_with_logits(
                 recon1, X2, reduction='none')
-            loss1 = torch.mean(torch.sum(loss1, dim=1) )
+            loss1 = torch.mean(torch.sum(loss1, dim=1))
 
             emb2 = self.emb_trainer2.emb_model.encoder(X2)
             recon2 = self.emb_trainer1.emb_model.decoder(emb2)
 
             loss2 = F.binary_cross_entropy_with_logits(
                 recon2, X1, reduction='none')
-            loss2 = torch.mean(torch.sum(loss2, dim=1) )
+            loss2 = torch.mean(torch.sum(loss2, dim=1))
 
             loss = self.psi * (loss1 + loss2)
 
